@@ -9,7 +9,9 @@ description: "Apply China patent inventive-step response guidelines when analyzi
 
 本 Skill 提供中国专利创造性答辩的工作规范，适用于审查意见分析、答复方案设计、正式成稿、驳回复盘及复审前分析。内容来源于项目 AGENTS.md，覆盖任务路由、阶段衔接、表达偏好及共同约束。
 
-本仓库随附下表列出的工作流和专项 Skill，以及各模块需要的参考文件。先确认目标环境中哪些配套 Skill 已可用；可用时完整读取所选入口的 `SKILL.md`，再按其路由读取必要参考。缺少配套 Skill 时，说明缺项及影响，按本 Skill 中已有约定处理可完成的工作，不声称已执行缺失模块。普通案件任务不一次加载全部 Skill。
+本 Skill 是整包的统一入口。工作流及专项子 Skill 随包保存在 `subskills/` 中，通过下面的相对路径读取，不依赖目标环境单独发现或注册子 Skill。先读取本入口，再完整读取本次选中的子 Skill，按其路由读取必要参考；普通案件任务不一次加载全部子 Skill。
+
+安装时保留整个 `china-patent-inventive-step-response/` 文件夹及内部层级。子 Skill 提供按需加载的工作指引；读取子 Skill 不代表创建子 agent，也不要求独立调用命令。
 
 在原项目中，`.opencode/skills` 是项目 Skill 的唯一内容源；移植到其他环境时，按该环境的 Skill 发现机制选择安装位置。
 
@@ -20,22 +22,22 @@ description: "Apply China patent inventive-step response guidelines when analyzi
 
 ## 任务路由
 
-配套 Skill 可用时，完整的创造性审查意见分析、答复方案设计、意见陈述书起草、驳回复盘或复审前分析，使用 `inventive-step-answer-workflow`。狭窄问题直接使用对应专项 Skill。
+完整的创造性审查意见分析、答复方案设计、意见陈述书起草、驳回复盘或复审前分析，读取 [完整答复工作流](subskills/inventive-step-answer-workflow/SKILL.md)。狭窄问题直接读取下表对应专项子 Skill。
 
 | 任务 | Skill |
 |---|---|
-| 提取审查员论证链、标记待核查环节 | `office-action-analysis` |
-| 判断 D1 是否适合作为起点 | `closest-prior-art` |
-| 确定区别特征、效果和实际技术问题 | `distinguishing-features` |
-| 判断技术启示、结合动机和显而易见性 | `obviousness-assessment` |
-| 评价预料不到效果、技术偏见等其他因素 | `secondary-considerations` |
-| 将已核实的分析组织为答复论点 | `challenge-examiner-reasoning` |
-| 设计权利要求修改方案 | `claim-amendment-strategies` |
-| 将已核实分析写成正式法律文本 | `legal-writing-style` |
-| 对既有专利成稿做保守校对 | `patent-prose-polish` |
-| 生物技术主题的特殊判断 | 通用模块叠加 `biotech-inventive-step` |
+| 提取审查员论证链、标记待核查环节 | [office-action-analysis](subskills/office-action-analysis/SKILL.md) |
+| 判断 D1 是否适合作为起点 | [closest-prior-art](subskills/closest-prior-art/SKILL.md) |
+| 确定区别特征、效果和实际技术问题 | [distinguishing-features](subskills/distinguishing-features/SKILL.md) |
+| 判断技术启示、结合动机和显而易见性 | [obviousness-assessment](subskills/obviousness-assessment/SKILL.md) |
+| 评价预料不到效果、技术偏见等其他因素 | [secondary-considerations](subskills/secondary-considerations/SKILL.md) |
+| 将已核实的分析组织为答复论点 | [challenge-examiner-reasoning](subskills/challenge-examiner-reasoning/SKILL.md) |
+| 设计权利要求修改方案 | [claim-amendment-strategies](subskills/claim-amendment-strategies/SKILL.md) |
+| 将已核实分析写成正式法律文本 | [legal-writing-style](subskills/legal-writing-style/SKILL.md) |
+| 对既有专利成稿做保守校对 | [patent-prose-polish](subskills/patent-prose-polish/SKILL.md) |
+| 生物技术主题的特殊判断 | 通用模块叠加 [biotech-inventive-step](subskills/biotech-inventive-step/SKILL.md) |
 
-`inventive-step-overview` 仅兼容旧名称，不承载实体判断规则。通用 `humanizer` 仅在明确要求通用文案自然化、AI 痕迹分析或特定语气改写时使用；不得默认用于专利答辩。
+[inventive-step-overview](subskills/inventive-step-overview/SKILL.md) 仅兼容旧名称，不承载实体判断规则。通用 `humanizer` 仅在明确要求通用文案自然化、AI 痕迹分析或特定语气改写时使用；不得默认用于专利答辩。
 
 ## 分工与交付
 
@@ -54,13 +56,13 @@ description: "Apply China patent inventive-step response guidelines when analyzi
 
 ## 可选外部核查
 
-DeepSeek（DS）核查仅在用户明确要求使用或明确选择该功能时启用。用户未主动要求时，不调用该工具、不准备外发材料包，也不主动询问是否开启；普通检查、复核、校对及笼统的子agent请求不自动触发外部DS核查。配套工作流和核查工具可用时，操作入口为 `inventive-step-answer-workflow/references/09-可选DeepSeek核查.md`；缺少入口或工具时说明限制，不假定已具备核查能力。本包不包含核查工具及其授权凭据。授权限定于用户指定的当前案件、文本和范围，外发继续遵循下述共同约束。
+DeepSeek（DS）核查仅在用户明确要求使用或明确选择该功能时启用。用户未主动要求时，不调用该工具、不准备外发材料包，也不主动询问是否开启；普通检查、复核、校对及笼统的子agent请求不自动触发外部DS核查。仅在启用该功能时读取 [可选核查操作说明](subskills/inventive-step-answer-workflow/references/09-可选DeepSeek核查.md)；缺少核查工具时说明限制，不假定已具备核查能力。本包不包含核查工具及其授权凭据。授权限定于用户指定的当前案件、文本和范围，外发继续遵循下述共同约束。
 
 ## 表达偏好
 
 - 分析、建议、成稿和日常回复均直接陈述事实、判断及依据。默认不用“不是……而是……”“并非……而是……”“不在于……而在于……”“真正的……是……”及“不仅……更……”等修辞性对照；不以同义替换保留同类逻辑。
 - 正式意见陈述以正面论述为主，围绕技术方案、对比文件、效果和启示展开。非必要时不直接或委婉评判审查意见的对错；确需澄清关键认定或提出具体请求时，中性、简要地回应并注明出处。
-- 正式成稿采用法言法语：概念准确、论证严谨、措辞审慎、请求清楚。具体标准由 `legal-writing-style` 维护；日常沟通保持清楚自然。
+- 正式成稿采用法言法语：概念准确、论证严谨、措辞审慎、请求清楚。具体标准由 [legal-writing-style](subskills/legal-writing-style/SKILL.md) 维护；日常沟通保持清楚自然。
 - 保留有实体意义的否定判断及必要事实对比。直接引文和权利要求文字保持原样，不为文风改变事实、术语、数字、日期、证据位置、结论强度或法律依据。
 
 ## 共同约束
