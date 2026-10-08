@@ -1,0 +1,4 @@
+interface:
+  display_name: "中国专利创造性答辩"
+  short_description: "中国专利创造性答辩的任务路由、分析交付与正式文本表达规范"
+  default_prompt: "使用 $china-patent-inventive-step-response，按工作规范处理当前中国专利创造性答辩任务。"
