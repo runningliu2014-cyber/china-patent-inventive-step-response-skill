@@ -1,0 +1,8 @@
+interface:
+  display_name: "专利文书保守润色"
+  short_description: "在不改变法律和技术含义的前提下清理专利成稿"
+  default_prompt: "Use $patent-prose-polish to conservatively polish this completed patent response."
+
+policy:
+  allow_implicit_invocation: true
+

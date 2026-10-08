@@ -1,0 +1,8 @@
+interface:
+  display_name: "中国专利创造性答辩"
+  short_description: "统筹中国专利创造性审查意见分析、修改方案与正式答复"
+  default_prompt: "Use $inventive-step-answer-workflow to analyze this office action and propose an evidence-backed response strategy."
+
+policy:
+  allow_implicit_invocation: true
+
