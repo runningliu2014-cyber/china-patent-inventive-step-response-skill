@@ -120,4 +120,14 @@ china-patent-inventive-step-response/
 
 ## 可选外部核查
 
-需要 DeepSeek 核查时，用户应明确提出，并由目标环境配置可用工具和授权凭据。启用后按 [可选核查说明](china-patent-inventive-step-response/subskills/inventive-step-answer-workflow/references/09-可选DeepSeek核查.md) 处理指定材料；普通分析、写作与校对使用主流程。
+需要 DeepSeek 核查时，用户应明确提出。本包提供复核入口、两轮操作规范和失败处理规则；API／MCP 工具实现及授权凭据由使用环境另行配置，安装 Skill 后还需确认这些条件已就绪。
+
+复核按“先独立评价原始材料，再对照主分析”的顺序进行，返回的发现由主 agent 逐项核实。具体操作见 [可选核查说明](china-patent-inventive-step-response/subskills/inventive-step-answer-workflow/references/09-可选DeepSeek核查.md)。
+
+配套工具的输出预算与审计要求已同步更新：
+
+- 默认省略 `max_tokens`，使用模型服务端默认预算，取消工具写死的 12,000 token 预算和 32,000 token 校验上限。
+- 思考强度默认 `high`，支持按次配置；生成配置写入预览和审计，并绑定请求指纹。
+- 截断、空报告或校验失败均记为未完成，不自动重试；模型自身的输出限制仍然适用。
+
+普通分析、写作与校对使用主流程；外部复核只处理用户明确指定的材料和范围。
